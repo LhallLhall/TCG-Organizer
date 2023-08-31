@@ -1,7 +1,19 @@
 import Image from 'next/image'
 import styles from './page.module.css'
+import Axios from "axios";
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/js/bootstrap.min.js';
+
+function getAPI(){
+  
+}
 
 export default function Home() {
+  Axios.get('https://api.magicthegathering.io/v1/cards').then((response) => {
+    console.log(response);
+  }, (error) => {
+    console.log(error);
+  });
   return (
     <main className={styles.main}>
       <div className={styles.description}>

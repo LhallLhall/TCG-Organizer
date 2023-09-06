@@ -1,10 +1,8 @@
 "use client";
-import Image from 'next/image'
-import styles from './page.module.css'
+// import Image from 'next/image'
+// import styles from './page.module.css'
 import Axios from "axios";
 import React, { useState } from "react";
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
 
 
 export default function Home() {
@@ -15,14 +13,23 @@ export default function Home() {
   const mtg = require('mtgsdk')
 
 // partial name match
-mtg.card.where({name: {searchValue}})
-.then((response: any) => {
-    console.log(response)
-})
 
-  const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setSearchValue(e.target.value);
-  };
+const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  setSearchValue(e.target.value);
+};
+
+function submit () {
+  mtg.card.where({name: {searchValue}})
+  .then((response: any) => {
+      console.log(response)
+  })
+//     mtg.card.find(3)
+//   .then((result: { card: { name: any; }; }) => {
+//     console.log(result.card.name) // "Black Lotus"
+// })
+  // inputField.value = "";
+  }
+
 
   function getAPI(){
     Axios.get('https://api.magicthegathering.io/v1/cards').then((response) => {
@@ -35,10 +42,10 @@ mtg.card.where({name: {searchValue}})
 
 
   return (
-    <main className={styles.main}>
+    <main>
       <div className="">
         <input type="text" onChange={search} id="inputField"/>
-        <button >Search</button>
+        <button onClick={submit} >Search</button>
       </div>
     </main>
   )

@@ -20,14 +20,15 @@ const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
 };
 
 function submit () {
-  console.log(searchValue)
+  console.log(searchValue, "search value")
   // getAPI();
   Axios.get(`https://api.magicthegathering.io/v1/cards?name=${searchValue}`).then((response) => {
     setData(response.data)
-    console.log(data);
+    console.log(data,"first data");
   }, (error) => {
     console.log(error);
   });
+  console.log(data, "second data");
 }
 
 
@@ -52,6 +53,15 @@ function submit () {
         <input type="text" onChange={search} id="inputField"/>
         <button onClick={submit} >Search</button>
       </div>
+
+
+    <div className="container w-100 h-50">
+      <div >
+
+      </div>
+    </div>
+
+
     </main>
   )
 }

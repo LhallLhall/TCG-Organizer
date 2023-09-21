@@ -21,27 +21,28 @@ const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
 
 function submit () {
   console.log(searchValue)
-  getAPI();
-  // mtg.card.where({name: {searchValue}})
-  // .then((response: any) => {
-  //     console.log(response)
-  // })
+  // getAPI();
+  Axios.get(`https://api.magicthegathering.io/v1/cards?name=${searchValue}`).then((response) => {
+    setData(response.data)
+    console.log(data);
+  }, (error) => {
+    console.log(error);
+  });
+}
+
+
+// mtg.card.where({name: {searchValue}})
+// .then((response: any) => {
+//     console.log(response)
+// })
 //     mtg.card.find(3)
 //   .then((result: { card: { name: any; }; }) => {
 //     console.log(result.card.name) // "Black Lotus"
 // })
-  // inputField.value = "";
-  }
+// inputField.value = "";
 
 
   function getAPI(){
-    Axios.get(`https://api.magicthegathering.io/v1/cards?name=${searchValue}`).then((response) => {
-      setData(response.data)
-      console.log(response.data)
-      console.log(data);
-    }, (error) => {
-      console.log(error);
-    });
   }
 
 

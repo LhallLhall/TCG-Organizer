@@ -1,10 +1,8 @@
 "use client";
-import Image from 'next/image'
-import styles from './page.module.css'
+// import Image from 'next/image'
+// import styles from './page.module.css'
 import Axios from "axios";
 import React, { useState } from "react";
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
 
 
 export default function Home() {
@@ -15,31 +13,66 @@ export default function Home() {
   const mtg = require('mtgsdk')
 
 // partial name match
-mtg.card.where({name: {searchValue}})
-.then((response: any) => {
-    console.log(response)
-})
 
-  const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setSearchValue(e.target.value);
-  };
+const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  setSearchValue(e.target.value);
+  console.log(e.target.value)
+};
 
-  function getAPI(){
-    Axios.get('https://api.magicthegathering.io/v1/cards').then((response) => {
-      setData(response.data)
-      console.log(data);
-    }, (error) => {
-      console.log(error);
-    });
-  }
+function submit () {
+  console.log(searchValue, "search value")
+  // getAPI();
+  Axios.get(`https://api.magicthegathering.io/v1/cards?name=${searchValue}`).then((response) => {
+    setData(response.data)
+    console.log(data,"first data");
+  }, (error) => {
+    console.log(error);
+  });
+  console.log(data, "second data");
+}
+
+let mappedData = data.map((card) => {
+return (
+  <div className="card" style={{ width: "18rem" }}>
+  <img src="..." className="card-img-top" alt="..."/>
+  <div className="card-body">
+    <h5 className="card-title">Card title</h5>
+    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" className="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+)
+});
+
+
+// mtg.card.where({name: {searchValue}})
+// .then((response: any) => {
+//     console.log(response)
+// })
+//     mtg.card.find(3)
+//   .then((result: { card: { name: any; }; }) => {
+//     console.log(result.card.name) // "Black Lotus"
+// })
+// inputField.value = "";
+
+
 
 
   return (
-    <main className={styles.main}>
+    <main>
       <div className="">
         <input type="text" onChange={search} id="inputField"/>
-        <button >Search</button>
+        <button onClick={submit} >Search</button>
       </div>
+
+
+    <div className="container w-100 h-50">
+      <div >
+      {mappedData}
+      </div>
+    </div>
+
+
     </main>
   )
 }

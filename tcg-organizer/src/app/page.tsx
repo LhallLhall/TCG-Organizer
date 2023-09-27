@@ -1,165 +1,70 @@
 "use client";
 // import Image from 'next/image'
-// import styles from './page.module.css'
+// import styles from "./page.module.css";
 import Axios from "axios";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 export default function Home() {
-  const [data, setData] = useState([]);
+  let [cardData, setcardData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   let inputField = document.getElementById("inputField");
 
-  const mtg = require('mtgsdk')
+  // const mtg = require('mtgsdk')
 
-// partial name match
+  // partial name match
 
-const search = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-  setSearchValue(e.target.value);
-  console.log(e.target.value)
-};
+  const search = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setSearchValue(e.target.value);
+    console.log(e.target.value);
+  };
 
-function submit () {
-  console.log(searchValue, "search value")
-  // getAPI();
-  Axios.get(`https://api.magicthegathering.io/v1/cards?name=${searchValue}`).then((response) => {
-    setData(response.data)
-    console.log(data,"first data");
-  }, (error) => {
-    console.log(error);
+  const submit = () => {
+    Axios.get(
+      `https://api.magicthegathering.io/v1/cards?name=${searchValue}`
+    ).then((response) => {
+      setcardData(response.data);
+      // console.log(typeof cardData)
+      console.log(response.data);
+      console.log(cardData, "first data");
+    });
+
+    console.log(cardData, "second data");
+  };
+  var isThisWorking = ["hello", "is", "this", "working?"];
+  console.log(cardData);
+  let mappedData = cardData.map((card, i) => {
+    console.log(card);
+    return (
+      <div className="col-3" key={i}>
+        <div className="card" style={{ width: "18rem" }}>
+          <img src="..." className="card-img-top" alt="..." />
+          <div className="card-body">
+            <h5 className="card-title"></h5>
+            <p className="card-text"></p>
+            <a href="#" className="btn btn-primary">
+              Go somewhere
+            </a>
+          </div>
+        </div>
+      </div>
+    );
   });
-  console.log(data, "second data");
-}
-
-let mappedData = data.map((card) => {
-return (
-  <div className="card" style={{ width: "18rem" }}>
-  <img src="..." className="card-img-top" alt="..."/>
-  <div className="card-body">
-    <h5 className="card-title">Card title</h5>
-    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" className="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
-)
-});
-
-
-// mtg.card.where({name: {searchValue}})
-// .then((response: any) => {
-//     console.log(response)
-// })
-//     mtg.card.find(3)
-//   .then((result: { card: { name: any; }; }) => {
-//     console.log(result.card.name) // "Black Lotus"
-// })
-// inputField.value = "";
-
-
-
-
+  console.log(typeof mappedData);
+  //! This is the main return
   return (
-    <main>
-      <div className="">
-        <input type="text" onChange={search} id="inputField"/>
-        <button onClick={submit} >Search</button>
+    <main style={{ height: "100vh", width: "100vw" }}>
+      <div className="container w-100 h-100">
+        <div className="">
+          <input type="text" onChange={search} id="inputField" />
+          <button onClick={submit}>Search</button>
+        </div>
+
+        <div className="container">
+          <div>{mappedData}</div>
+        </div>
       </div>
-
-
-    <div className="container w-100 h-50">
-      <div >
-      {mappedData}
-      </div>
-    </div>
-
-
     </main>
-  )
+  );
 }
-
-{/* <div className={styles.description}>
-  <p>
-    Get started by editing&nbsp;
-    <code className={styles.code}>src/app/page.tsx</code>
-  </p>
-  <div>
-    <a
-      href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      By{' '}
-      <Image
-        src="/vercel.svg"
-        alt="Vercel Logo"
-        className={styles.vercelLogo}
-        width={100}
-        height={24}
-        priority
-      />
-    </a>
-  </div>
-</div>
-
-<div className={styles.center}>
-  <Image
-    className={styles.logo}
-    src="/next.svg"
-    alt="Next.js Logo"
-    width={180}
-    height={37}
-    priority
-  />
-</div>
-
-<div className={styles.grid}>
-  <a
-    href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    className={styles.card}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <h2>
-      Docs <span>-&gt;</span>
-    </h2>
-    <p>Find in-depth information about Next.js features and API.</p>
-  </a>
-
-  <a
-    href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    className={styles.card}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <h2>
-      Learn <span>-&gt;</span>
-    </h2>
-    <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-  </a>
-
-  <a
-    href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    className={styles.card}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <h2>
-      Templates <span>-&gt;</span>
-    </h2>
-    <p>Explore the Next.js 13 playground.</p>
-  </a>
-
-  <a
-    href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    className={styles.card}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <h2>
-      Deploy <span>-&gt;</span>
-    </h2>
-    <p>
-      Instantly deploy your Next.js site to a shareable URL with Vercel.
-    </p>
-  </a>
-</div> */}

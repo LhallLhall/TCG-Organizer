@@ -11,10 +11,6 @@ export default function Home() {
   const [searchValue, setSearchValue] = useState("");
   let inputField = document.getElementById("inputField");
 
-  // const mtg = require('mtgsdk')
-
-  // partial name match
-
   const search = (e: { target: { value: React.SetStateAction<string> } }) => {
     setSearchValue(e.target.value);
     console.log(e.target.value);
@@ -31,7 +27,6 @@ export default function Home() {
     });
   };
 
-  var isThisWorking = ["hello", "is", "this", "working?"];
   console.log(cardData);
   let mappedData = cardData.map((card, i) => {
     console.log(card);
@@ -55,7 +50,6 @@ export default function Home() {
       </div>
     );
   });
-  console.log(mappedData);
   //! This is the main return
   return (
     <main style={{ height: "100vh", width: "100vw" }}>
@@ -65,9 +59,7 @@ export default function Home() {
           <button onClick={submit}>Search</button>
         </div>
 
-        <div className="row">
-          <div>{mappedData}</div>
-        </div>
+        <div className="row">{mappedData}</div>
       </div>
     </main>
   );

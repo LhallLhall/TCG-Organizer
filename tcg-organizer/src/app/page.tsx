@@ -19,7 +19,7 @@ export default function Home() {
   const submit = () => {
     Axios.get(
       `https://api.magicthegathering.io/v1/cards?name=${searchValue}`
-    ).then((response) => {
+    ).then((response: { data: { cards: React.SetStateAction<never[]>; }; }) => {
       setcardData(response.data.cards);
       // console.log(typeof cardData)
       console.log(response.data.cards);
@@ -28,28 +28,31 @@ export default function Home() {
   };
 
   console.log(cardData);
-  let mappedData = cardData.map((card, i) => {
-    console.log(card);
-    let originalText = card.originalText;
-    if (originalText == null) {
-      originalText = card.text;
-      originalText = originalText.replace(/{T}, /g, "");
-    }
-    return (
-      <div className="col-3" key={i}>
-        <div className="card" style={{ width: "18rem" }}>
-          <img src={card.imageUrl} className="card-img-top" alt="..." />
-          <div className="card-body">
-            <h5 className="card-title">{card.name}</h5>
-            <p className="card-text">{originalText}</p>
-            <a href="#" className="btn btn-primary">
-              Go somewhere
-            </a>
+  function CardsData() {
+    let mappedData = cardData.map((card, i) => {
+      console.log(card);
+      let originalText = card.originalText;
+      if (originalText == null) {
+        originalText = card.text;
+        originalText = originalText.replace(/{T}, /g, "");
+      }
+      return (
+        <div className="col-3" key={i}>
+          <div className="card" style={{ width: "18rem" }}>
+            <img src={card.imageUrl} className="card-img-top" alt="..." />
+            <div className="card-body">
+              <h5 className="card-title">{card.name}</h5>
+              <p className="card-text">{originalText}</p>
+              <a href="#" className="btn btn-primary">
+                Go somewhere
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    );
-  });
+      );
+    });
+    return mappedData
+  }
   //! This is the main return
   return (
     <main style={{ height: "100vh", width: "100vw" }}>
@@ -59,7 +62,7 @@ export default function Home() {
           <button onClick={submit}>Search</button>
         </div>
 
-        <div className="row">{mappedData}</div>
+        <div className="row">{CardsData}</div>
       </div>
     </main>
   );

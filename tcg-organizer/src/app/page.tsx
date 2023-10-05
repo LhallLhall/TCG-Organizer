@@ -10,6 +10,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 
 export default function Home() {
   let [cardData, setcardData] = useState([]);
+  let [altCard, setAltCard] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   let inputField = document.getElementById("inputField");
 
@@ -25,9 +26,6 @@ export default function Home() {
           `https://api.magicthegathering.io/v1/cards?name=${searchValue}`
         ).then((response) => {
           setcardData(response.data.cards);
-          // console.log(typeof cardData)
-          console.log(response.data.cards);
-          // console.log(cardData, "first data");
         });
       } catch {
         toast.error("Search Was Invalid");
@@ -39,7 +37,14 @@ export default function Home() {
     }
   };
 
+  function cardHandler(card: React.SetStateAction<never[]>) {
+    console.log("HELLO IS THIS HITTING?????");
+    setAltCard(card);
+    console.log("alt card", altCard);
+    console.log(card);
+  }
   console.log(cardData);
+
   let mappedData = cardData.map((card, i) => {
     console.log(card);
     let originalText = (card as any).originalText;
@@ -47,9 +52,15 @@ export default function Home() {
       originalText = (card as any).text;
       originalText = originalText.replace(/{T}, /g, "");
     }
+    let li = document.getElementById("li" + i);
+    if (li) {
+      li.addEventListener("click", (event: MouseEvent) => {
+        cardHandler(card);
+      });
+    }
     return (
       <div key={i} className="">
-        <li className="list-group-item">
+        <li id={"li" + i} className="list-group-item">
           <strong>{(card as any).name}</strong> - {(card as any).setName}
         </li>
       </div>
@@ -65,11 +76,12 @@ export default function Home() {
   //     </div>
   //   </div>
   // </div>
+
   //! This is the main return
   return (
     <main style={{ height: "100vh", width: "100vw" }}>
       <div className="container w-100 h-100">
-        <div className="">
+        <div className="d-flex">
           <input type="text" onChange={search} id="inputField" />
           <button className="btn btn-light" onClick={submit}>
             Search
@@ -80,7 +92,7 @@ export default function Home() {
           <div className="col-6">
             <div className="list-group">{mappedData}</div>
           </div>
-          <div className="col-6">{/* images go here */}</div>
+          <div className="col-6"></div>
         </div>
       </div>
       <ToastContainer />

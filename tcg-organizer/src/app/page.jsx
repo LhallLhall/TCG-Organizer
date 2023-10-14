@@ -12,12 +12,26 @@ import CardDisplay from "./components/card-display";
 export default function Home() {
   let [cardData, setcardData] = useState([]);
   let [apiCall, setApiCall] = useState(``);
-  // let [radioValue, setRadioValue] = useState("");
+  let [radioValue, setRadioValue] = useState("");
   let [searchValue, setSearchValue] = useState("");
   // let inputField = document.getElementById("inputField");
 
   const submit = () => {
     console.log(apiCall);
+    let apiUrl = "";
+    if (radioValue === "btnradio1") {
+      apiUrl = "https://api.magicthegathering.io/v1/cards";
+      apiUrl += `?name=${searchValue}`;
+    }
+    if (radioValue === "btnradio2") {
+      apiUrl = "https://api.pokemontcg.io/v2/cards";
+      apiUrl += `?name:${searchValue}`;
+    }
+    if (radioValue === "btnradio3") {
+      apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
+      apiUrl += `?name=${searchValue}`;
+    }
+    setApiCall(apiUrl);
     if (searchValue !== "") {
       try {
         Axios.get(apiCall).then((response) => {
@@ -34,21 +48,14 @@ export default function Home() {
     }
   };
 
-  function radiohandler(e: any) {
-    console.log("hit");
-    let apiUrl = "";
-    if (e.target.id === "btnradio1") {
-      apiUrl = "https://api.magicthegathering.io/v1/cards";
-      apiUrl += `?name=${searchValue}`;
-    } else if (e.target.id === "btnradio2") {
-      apiUrl = "https://api.pokemontcg.io/v2/cards";
-      apiUrl += `?name:${searchValue}`;
-    } else if (e.target.id === "btnradio3") {
-      apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
-      apiUrl += `?name=${searchValue}`;
+  function radiohandler(e) {
+    setRadioValue(e.target.id)
+  }
+
+  let cardDisplayFunc = () => {
+    if (cardData){
+      return <div><CardDisplay cardData={cardData}/></div>
     }
-    console.log(apiUrl);
-    setApiCall(apiUrl);
   }
 
   return (
@@ -121,19 +128,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <CardDisplay cardData={cardData} />
-          {/* <div className="row">
-            <div className="col-6">
-              <div className="list-group">{mappedData}</div>
-            </div>
-            <div className="col-6">
-              {altCard && (
-                <div className="selected-card">
-                  <img src={cardImage} alt={(altCard as any).name} />
-                </div>
-              )}
-            </div>
-          </div> */}
+          {cardDisplayFunc()}
         </div>
       </div>
       <ToastContainer />

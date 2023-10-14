@@ -28,5 +28,8 @@
     "tls": false,
     "net": false,
     "fs": false
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^5.2.7"
   }
 }

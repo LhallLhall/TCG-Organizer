@@ -12,8 +12,9 @@ import CardDisplay from "./components/card-display";
 export default function Home() {
   let [cardData, setcardData] = useState([]);
   let [apiCall, setApiCall] = useState(``);
-  let [radioValue, setRadioValue] = useState("");
+  let [radioValue, setRadioValue] = useState("btnradio1");
   let [searchValue, setSearchValue] = useState("");
+  let [apiSwitch, setApiSwitch] = useState("");
   // let inputField = document.getElementById("inputField");
 
   const submit = () => {
@@ -25,7 +26,8 @@ export default function Home() {
     }
     if (radioValue === "btnradio2") {
       apiUrl = "https://api.pokemontcg.io/v2/cards";
-      apiUrl += `?name:${searchValue}`;
+      apiUrl += `?q=name:${searchValue}`;
+      console.log(apiUrl, "apiUrl")
     }
     if (radioValue === "btnradio3") {
       apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
@@ -48,14 +50,38 @@ export default function Home() {
     }
   };
 
-  function radiohandler(e) {
-    setRadioValue(e.target.id)
-  }
+  // function radiohandler(e) {
+  //   setRadioValue(e.target.id)
+  //   console.log(apiSwitch, "apiSwitch")
+  //   // let apiUrl = "";
+  //   switch (radioValue) {
+  //     case "btnradio1":
+  //       console.log("btn1")
+  //       setApiSwitch("mtg")
+  //       // apiUrl = "https://api.magicthegathering.io/v1/cards";
+  //       // apiUrl += `?name=${searchValue}`;
+  //       break;
+  //     case "btnradio2":
+  //       console.log("btn2")
+  //       setApiSwitch("pokemon")
+  //       // apiUrl = "https://api.pokemontcg.io/v2/cards";
+  //       // apiUrl += `?q=name:${searchValue}`;
+  //       break;
+  //     case "btnradio3":
+  //       console.log("btn3")
+  //       setApiSwitch("yugioh")
+  //       // apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
+  //       // apiUrl += `?name=${searchValue}`;
+  //       break;
+
+  //   }
+  //   // setApiCall(apiUrl);
+  // }
 
   let cardDisplayFunc = () => {
-    if (cardData){
-      return <div><CardDisplay cardData={cardData}/></div>
-    }
+    // if (cardData){
+      return <div><CardDisplay apiSwitch={apiSwitch} cardData={cardData} radioValue={radioValue}/></div>
+    // }
   }
 
   return (
@@ -74,7 +100,10 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio1"
                 autoComplete="off"
-                onChange={radiohandler}
+                onClick={() => {
+                  setApiSwitch("mtg")
+                  setRadioValue("btnradio1")
+                }}
               />
               <label className="btn btn-outline-secondary" htmlFor="btnradio1">
                 Magic the Gathering
@@ -86,7 +115,10 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio2"
                 autoComplete="off"
-                onChange={radiohandler}
+                onClick={() => {
+                  setApiSwitch("pokemon")
+                  setRadioValue("btnradio2")
+                }}
               />
               <label className="btn btn-outline-secondary" htmlFor="btnradio2">
                 Pokémon
@@ -98,7 +130,10 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio3"
                 autoComplete="off"
-                onChange={radiohandler}
+                onClick={() => {
+                  setApiSwitch("yugioh")
+                  setRadioValue("btnradio3")
+                }}
               />
               <label className="btn btn-outline-secondary" htmlFor="btnradio3">
                 Yu-Gi-Oh!
@@ -110,6 +145,7 @@ export default function Home() {
           <div className="row d-flex justify-content-center p-3">
             <div className="input-group mb-3">
               <input
+                id="cardSearchInput"
                 type="text"
                 value={searchValue}
                 className="form-control"
@@ -122,7 +158,7 @@ export default function Home() {
                 className="btn btn-outline-secondary"
                 type="button"
                 id="button-addon2"
-                onClick={submit}
+                onClick={() => submit()}
               >
                 Find Card
               </button>

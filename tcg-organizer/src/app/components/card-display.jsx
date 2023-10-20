@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 export default function CardDisplay(props) {
+  console.log(props)
   // console.log(props.cardData, "card data")
   // console.log(props,"props")
   let [altCard, setAltCard] = useState(null);
@@ -14,6 +15,7 @@ export default function CardDisplay(props) {
   }, [props.cardData]);
 
   function cardHandler(card) {
+
     // let button = document.getElementById("li" + i)
     // if (button.classList.contains("active")) {
     //   button.classList.add("active")
@@ -33,16 +35,28 @@ export default function CardDisplay(props) {
         <div className="col-6">
           <div className="list-group">{
               cardData.map((card, i) => {
-                let originalText = card.originalText || card.text;
-                originalText = originalText.replace(/{T}, /g, "");
+                let cardName
+                let setName
+                if (props.apiSwitch === "mtg") {
+                    cardName = card.name;
+                    setName = card.setName;
+                    let originalText = card.originalText || card.text;
+                    originalText = originalText.replace(/{T}, /g, "");
+                    console.log("mtg")
+                }
+                if (props.apiSwitch === "pokemon") {
+                }
+                if (props.apiSwitch === "yugioh") {
+                }
+                
                 return (
-                  <div key={Date.now} className="">
+                  <div style={{}} key={cardName + i} className="">
                     <button
-                      id={"li" + i + card.name}
+                      id={"li" + i + cardName}
                       className="list-group-item list-group-item-action"
                       onClick={() => cardHandler(card)}
                     >
-                      <strong>{card.name}</strong> - {card.setName}
+                      <strong>{cardName}</strong> - {setName}
                     </button>
                   </div>
                 );

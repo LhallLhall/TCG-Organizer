@@ -25,8 +25,8 @@ export default function Home() {
       apiUrl += `?name=${searchValue}`;
     }
     if (radioValue === "btnradio2") {
-      apiUrl = "https://api.pokemontcg.io/v2/cards";
-      apiUrl += `?q=name:${searchValue}`;
+      apiUrl = "https://api.pokemontcg.io/v2/cards?q=name:charizard";
+      // apiUrl += `?q=name:${searchValue}`;
       console.log(apiUrl, "apiUrl")
     }
     if (radioValue === "btnradio3") {
@@ -40,6 +40,7 @@ export default function Home() {
           setcardData(response.data.cards);
         });
         setSearchValue("");
+        console.log(cardData)
       } catch {
         toast.error("Search Was Invalid");
         position: toast.POSITION.TOP_CENTER;
@@ -50,33 +51,6 @@ export default function Home() {
     }
   };
 
-  // function radiohandler(e) {
-  //   setRadioValue(e.target.id)
-  //   console.log(apiSwitch, "apiSwitch")
-  //   // let apiUrl = "";
-  //   switch (radioValue) {
-  //     case "btnradio1":
-  //       console.log("btn1")
-  //       setApiSwitch("mtg")
-  //       // apiUrl = "https://api.magicthegathering.io/v1/cards";
-  //       // apiUrl += `?name=${searchValue}`;
-  //       break;
-  //     case "btnradio2":
-  //       console.log("btn2")
-  //       setApiSwitch("pokemon")
-  //       // apiUrl = "https://api.pokemontcg.io/v2/cards";
-  //       // apiUrl += `?q=name:${searchValue}`;
-  //       break;
-  //     case "btnradio3":
-  //       console.log("btn3")
-  //       setApiSwitch("yugioh")
-  //       // apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
-  //       // apiUrl += `?name=${searchValue}`;
-  //       break;
-
-  //   }
-  //   // setApiCall(apiUrl);
-  // }
 
   let cardDisplayFunc = () => {
     // if (cardData){

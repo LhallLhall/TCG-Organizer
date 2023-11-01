@@ -17,7 +17,7 @@ export default function Home() {
   let [apiSwitch, setApiSwitch] = useState("");
   // let inputField = document.getElementById("inputField");
 
-  const submit = () => {
+  function submit() {
     console.log(apiCall);
     let apiUrl = "";
     if (radioValue === "btnradio1") {
@@ -25,8 +25,8 @@ export default function Home() {
       apiUrl += `?name=${searchValue}`;
     }
     if (radioValue === "btnradio2") {
-      apiUrl = "https://api.pokemontcg.io/v2/cards?q=name:charizard";
-      // apiUrl += `?q=name:${searchValue}`;
+      apiUrl = "https://api.pokemontcg.io/v2/cards";
+      apiUrl += `?q=name:${searchValue}`;
       console.log(apiUrl, "apiUrl")
     }
     if (radioValue === "btnradio3") {
@@ -37,7 +37,16 @@ export default function Home() {
     if (searchValue !== "") {
       try {
         Axios.get(apiCall).then((response) => {
-          setcardData(response.data.cards);
+          if (radioValue === "btnradio1") {
+            setcardData(response.data.cards);
+          }
+          if (radioValue === "btnradio2") {
+            setcardData(response.data.data)
+          }
+          if (radioValue === "btnradio3") {
+            setcardData(response.data)
+          }
+          //make sure to change this to response.data when on pokemon api url
         });
         setSearchValue("");
         console.log(cardData)
@@ -75,6 +84,7 @@ export default function Home() {
                 id="btnradio1"
                 autoComplete="off"
                 onClick={() => {
+                  setcardData([])
                   setApiSwitch("mtg")
                   setRadioValue("btnradio1")
                 }}
@@ -90,6 +100,7 @@ export default function Home() {
                 id="btnradio2"
                 autoComplete="off"
                 onClick={() => {
+                  setcardData([])
                   setApiSwitch("pokemon")
                   setRadioValue("btnradio2")
                 }}
@@ -105,6 +116,7 @@ export default function Home() {
                 id="btnradio3"
                 autoComplete="off"
                 onClick={() => {
+                  setcardData([])
                   setApiSwitch("yugioh")
                   setRadioValue("btnradio3")
                 }}

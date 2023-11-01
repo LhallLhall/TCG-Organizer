@@ -14,12 +14,32 @@ export default function CardDisplay(props) {
     setCardData(props.cardData);
   }, [props.cardData]);
 
+  useEffect(() => {
+    setAltCard(null)
+  }, [props.apiSwitch])
+
   function cardHandler(card) {
-    let img =
-      (card).imageUrl ||
-      `https://placehold.co/265x370?text=${card.name}+Image+Not+Found`;
-    setCardImage(img);
-    setAltCard(card);
+    if (props.apiSwitch === "mtg") {
+      let img =
+        (card).imageUrl ||
+        `https://placehold.co/265x370?text=${card.name}+Image+Not+Found`;
+      setCardImage(img);
+      setAltCard(card);
+    }
+    if (props.apiSwitch === "pokemon") {
+      let img =
+        (card).images.small ||
+        `https://placehold.co/265x370?text=${card.name}+Image+Not+Found`;
+      setCardImage(img);
+      setAltCard(card);
+    }
+    if (props.apiSwitch === "yugioh") {
+      let img =
+        (card).imageUrl ||
+        `https://placehold.co/265x370?text=${card.name}+Image+Not+Found`;
+      setCardImage(img);
+      setAltCard(card);
+    }
   }
   if (cardData) {
 
@@ -28,10 +48,10 @@ export default function CardDisplay(props) {
         <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group">
+            <div className="list-group overflow" style={{overflowY: "scroll", height: "340px"}}>
               {cardData.map((card, i) => {
-                let originalText = card.originalText || card.text;
-                originalText = originalText.replace(/{T}, /g, "");
+                // let originalText = card.originalText || card.text;
+                // originalText = originalText.replace(/{T}, /g, "");
                 return (
                   <div style={{}} key={card.name + i} className="">
                       <button
@@ -64,12 +84,12 @@ export default function CardDisplay(props) {
       <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group">
-              {/* {cardData.map((card, i) => {
+            <div className="list-group overflow" style={{overflowY: "scroll"}}>
+              {cardData.map((card, i) => {
                 let cardName = card.name;
-                let setName = card.setName;
+                let setName = card.set.name;
                 let originalText = card.originalText || card.text;
-                originalText = originalText.replace(/{T}, /g, "");
+                // originalText = originalText.replace(/{T}, /g, "");
                 return (
                   <div style={{}} key={cardName + i} className="">
                   <button
@@ -81,7 +101,7 @@ export default function CardDisplay(props) {
                   </button>
                   </div>
                   );
-                })} */}
+                })}
             </div>
           </div>
           <div className="col-6">
@@ -100,7 +120,7 @@ export default function CardDisplay(props) {
     <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group">
+            <div className="list-group overflow">
               {cardData.map((card, i) => {
                 let cardName = card.name;
                 let setName = card.setName;

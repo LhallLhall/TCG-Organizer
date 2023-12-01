@@ -1,4 +1,5 @@
 "use client";
+import scrollbar from "../scrollbar.module.css"
 import React from "react";
 import { useState, useEffect } from "react";
 
@@ -48,22 +49,24 @@ export default function CardDisplay(props) {
         <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group overflow" style={{overflowY: "scroll", height: "340px"}}>
-              {cardData.map((card, i) => {
-                // let originalText = card.originalText || card.text;
-                // originalText = originalText.replace(/{T}, /g, "");
-                return (
-                  <div style={{}} key={card.name + i} className="">
-                      <button
-                        id={"li" + i + card.name}
-                        className="list-group-item list-group-item-action"
-                        onClick={() => cardHandler(card)}
-                        >
-                        <strong>{card.name}</strong> - {card.setName}
-                      </button>
-                    </div>
-                  );
-                })}
+            <div>
+              <div className={`list-group`} style={{ height: "340px"}}>
+                {cardData.map((card, i) => {
+                  // let originalText = card.originalText || card.text;
+                  // originalText = originalText.replace(/{T}, /g, "");
+                  return (
+                    <div style={{}} key={card.name + i} className="">
+                        <button
+                          id={"li" + i + card.name}
+                          className="list-group-item list-group-item-action"
+                          onClick={() => cardHandler(card)}
+                          >
+                          <strong>{card.name}</strong> - {card.setName}
+                        </button>
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
           </div>
           <div className="col-6">
@@ -84,11 +87,11 @@ export default function CardDisplay(props) {
       <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group overflow" style={{overflowY: "scroll"}}>
+            <div className="list-group overflow" style={{overflowY: "scroll", height: "340px"}}>
               {cardData.map((card, i) => {
                 let cardName = card.name;
                 let setName = card.set.name;
-                let originalText = card.originalText || card.text;
+                // let originalText = card.originalText || card.text;
                 // originalText = originalText.replace(/{T}, /g, "");
                 return (
                   <div style={{}} key={cardName + i} className="">
@@ -117,39 +120,48 @@ export default function CardDisplay(props) {
   }
   
   if (props.apiSwitch === "yugioh") {
-    <div>
+    return(
+      <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group overflow">
+            <div className="list-group overflow" style={{overflowY: "scroll", height: "340px"}}>
               {cardData.map((card, i) => {
                 let cardName = card.name;
-                let setName = card.setName;
-                let originalText = card.originalText || card.text;
-                originalText = originalText.replace(/{T}, /g, "");
-                return (
-                  <div style={{}} key={cardName + i} className="">
+                console.log(cardName)
+                // let setName = () => {
+                  //   array = [];
+                  //   card.card_sets.forEach(set => {
+                    //     array.push(set)
+                    //   });
+                    //   return array[0].set_name;
+                    // }
+                    // let originalText = card.originalText || card.text;
+                    // originalText = originalText.replace(/{T}, /g, "");
+                    return (
+                      <div style={{}} key={cardName + i} className="">
                       <button
                         id={"li" + i + cardName}
                         className="list-group-item list-group-item-action"
                         onClick={() => cardHandler(card)}
                         >
-                        <strong>{cardName}</strong> - {setName}
+                        <strong>{cardName}</strong> - {cardName}
                       </button>
                     </div>
                   );
                 })}
             </div>
           </div>
-          <div className="col-6">
+          {/* <div className="col-6">
             {altCard && (
               <div className="selected-card">
-                <img src={cardImage} alt={altCard.name} />
+              <img src={cardImage} alt={altCard.name} />
               </div>
-            )}
-          </div>
+              )}
+            </div> */}
         </div>
       </div>
+    )
   } 
 }
-  
+
 }

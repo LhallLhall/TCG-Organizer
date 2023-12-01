@@ -227,11 +227,3 @@
     transform: rotate(0deg);
   }
 }
-
-li:hover {
-  cursor:pointer;
-}
-
-.overflow {
-overflow-y: scroll;
-}

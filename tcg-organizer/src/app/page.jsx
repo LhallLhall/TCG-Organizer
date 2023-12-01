@@ -1,5 +1,5 @@
 "use client";
-// import "./page.module.css";
+import styles from "./page.module.css";
 // import "./page.css";
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
@@ -10,55 +10,49 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import CardDisplay from "./components/card-display";
 
 export default function Home() {
-  let [cardData, setcardData] = useState([]);
+  let [cardData, setCardData] = useState([]);
   let [apiCall, setApiCall] = useState(``);
   let [radioValue, setRadioValue] = useState("btnradio1");
   let [searchValue, setSearchValue] = useState("");
   let [apiSwitch, setApiSwitch] = useState("");
   // let inputField = document.getElementById("inputField");
 
-  function submit() {
-    console.log(apiCall);
-    let apiUrl = "";
-    if (radioValue === "btnradio1") {
-      apiUrl = "https://api.magicthegathering.io/v1/cards";
-      apiUrl += `?name=${searchValue}`;
-    }
-    if (radioValue === "btnradio2") {
-      apiUrl = "https://api.pokemontcg.io/v2/cards";
-      apiUrl += `?q=name:${searchValue}`;
-      console.log(apiUrl, "apiUrl")
-    }
-    if (radioValue === "btnradio3") {
-      apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
-      apiUrl += `?name=${searchValue}`;
-    }
-    setApiCall(apiUrl);
-    if (searchValue !== "") {
+  useEffect(() => {
       try {
         Axios.get(apiCall).then((response) => {
           if (radioValue === "btnradio1") {
-            setcardData(response.data.cards);
+            setCardData(response.data.cards);
           }
           if (radioValue === "btnradio2") {
-            setcardData(response.data.data)
+            setCardData(response.data.data);
           }
           if (radioValue === "btnradio3") {
-            setcardData(response.data)
+            setCardData(response.data.data);
           }
-          //make sure to change this to response.data when on pokemon api url
-        });
-        setSearchValue("");
-        console.log(cardData)
+        }); 
+        console.log(cardData);
       } catch {
         toast.error("Search Was Invalid");
-        position: toast.POSITION.TOP_CENTER;
       }
+  }, [apiCall]);
+
+  function submit() {
+    if (radioValue !== "") {
+      let apiUrl = "";
+      if (radioValue === "btnradio1") {
+        apiUrl = `https://api.magicthegathering.io/v1/cards?name=${searchValue}`;
+      }
+      if (radioValue === "btnradio2") {
+        apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${searchValue}`;
+      }
+      if (radioValue === "btnradio3") {
+        apiUrl = `https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${searchValue}&num=99&offset=0`;
+      }
+      setApiCall(apiUrl);
     } else {
       toast.error("Search Is Empty");
-      position: toast.POSITION.TOP_CENTER;
     }
-  };
+  }
 
 
   let cardDisplayFunc = () => {
@@ -83,8 +77,10 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio1"
                 autoComplete="off"
+                for="btnradio1"
                 onClick={() => {
-                  setcardData([])
+                  setCardData([])
+                  setSearchValue("")
                   setApiSwitch("mtg")
                   setRadioValue("btnradio1")
                 }}
@@ -99,8 +95,10 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio2"
                 autoComplete="off"
+                for="btnradio2"
                 onClick={() => {
-                  setcardData([])
+                  setCardData([])
+                  setSearchValue("")
                   setApiSwitch("pokemon")
                   setRadioValue("btnradio2")
                 }}
@@ -114,9 +112,11 @@ export default function Home() {
                 className="btn-check"
                 name="btnradio"
                 id="btnradio3"
+                for="btnradio3"
                 autoComplete="off"
                 onClick={() => {
-                  setcardData([])
+                  setCardData([])
+                  setSearchValue("")
                   setApiSwitch("yugioh")
                   setRadioValue("btnradio3")
                 }}

@@ -4,7 +4,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 export default function CardDisplay(props) {
-  console.log(props)
+  // console.log(props)
   // console.log(props.cardData, "card data")
   // console.log(props,"props")
   let [altCard, setAltCard] = useState(null);
@@ -36,7 +36,7 @@ export default function CardDisplay(props) {
     }
     if (props.apiSwitch === "yugioh") {
       let img =
-        (card).imageUrl ||
+        (card).card_images?.[0]?.image_url ||
         `https://placehold.co/265x370?text=${card.name}+Image+Not+Found`;
       setCardImage(img);
       setAltCard(card);
@@ -50,7 +50,7 @@ export default function CardDisplay(props) {
         <div className="row">
           <div className="col-6">
             <div>
-              <div className={`list-group`} style={{ height: "340px"}}>
+              <div className={`list-group`} style={{ overflowY: "auto", height: "340px"}}>
                 {cardData.map((card, i) => {
                   // let originalText = card.originalText || card.text;
                   // originalText = originalText.replace(/{T}, /g, "");
@@ -61,7 +61,7 @@ export default function CardDisplay(props) {
                           className="list-group-item list-group-item-action"
                           onClick={() => cardHandler(card)}
                           >
-                          <strong>{card.name}</strong> - {card.setName}
+                          <strong>{card.name}</strong> - {card?.setName}
                         </button>
                       </div>
                     );
@@ -82,15 +82,15 @@ export default function CardDisplay(props) {
   }
   
   if (props.apiSwitch === "pokemon") {
-    console.log(cardData)
+    // console.log(cardData)
     return (
       <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group overflow" style={{overflowY: "scroll", height: "340px"}}>
+            <div className="list-group overflow" style={{overflowY: "auto", height: "340px"}}>
               {cardData.map((card, i) => {
-                let cardName = card.name;
-                let setName = card.set.name;
+                let cardName = card?.name;
+                let setName = card?.set?.name;
                 // let originalText = card.originalText || card.text;
                 // originalText = originalText.replace(/{T}, /g, "");
                 return (
@@ -124,10 +124,11 @@ export default function CardDisplay(props) {
       <div>
         <div className="row">
           <div className="col-6">
-            <div className="list-group overflow" style={{overflowY: "scroll", height: "340px"}}>
+            <div className="list-group overflow" style={{overflowY: "auto", height: "340px"}}>
               {cardData.map((card, i) => {
                 let cardName = card.name;
-                console.log(cardName)
+                const setName = card.card_sets?.[0]?.set_name
+                // console.log(cardName)
                 // let setName = () => {
                   //   array = [];
                   //   card.card_sets.forEach(set => {
@@ -144,20 +145,20 @@ export default function CardDisplay(props) {
                         className="list-group-item list-group-item-action"
                         onClick={() => cardHandler(card)}
                         >
-                        <strong>{cardName}</strong> - {cardName}
+                        <strong>{cardName}</strong> - {setName}
                       </button>
                     </div>
                   );
                 })}
             </div>
           </div>
-          {/* <div className="col-6">
+          <div className="col-6">
             {altCard && (
               <div className="selected-card">
               <img src={cardImage} alt={altCard.name} />
               </div>
               )}
-            </div> */}
+            </div>
         </div>
       </div>
     )

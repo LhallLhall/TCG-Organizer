@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import CardDisplay from "./components/card-display";
+// import { error } from "console";
 
 export default function Home() {
   let [cardData, setCardData] = useState([]);
@@ -20,18 +21,25 @@ export default function Home() {
   useEffect(() => {
       try {
         Axios.get(apiCall).then((response) => {
-          if (radioValue === "btnradio1") {
-            setCardData(response.data.cards);
-          }
-          if (radioValue === "btnradio2") {
-            setCardData(response.data.data);
-          }
-          if (radioValue === "btnradio3") {
-            setCardData(response.data.data);
+          if(response){
+            if (radioValue === "btnradio1") {
+              setCardData(response.data.cards);
+            }
+            if (radioValue === "btnradio2") {
+              setCardData(response.data.data);
+            }
+            if (radioValue === "btnradio3") {
+              setCardData(response.data.data);
+            }
+            if (response === null) {
+              toast.error("Card is spelled wrong or doesn't exist")
+            }
           }
         }); 
+        
         console.log(cardData);
-      } catch {
+      } catch (ex) {
+        console.log(ex)
         toast.error("Search Was Invalid");
       }
   }, [apiCall]);
@@ -77,7 +85,7 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio1"
                 autoComplete="off"
-                for="btnradio1"
+                htmlFor="btnradio1"
                 onClick={() => {
                   setCardData([])
                   setSearchValue("")
@@ -95,7 +103,7 @@ export default function Home() {
                 name="btnradio"
                 id="btnradio2"
                 autoComplete="off"
-                for="btnradio2"
+                htmlFor="btnradio2"
                 onClick={() => {
                   setCardData([])
                   setSearchValue("")
@@ -112,7 +120,7 @@ export default function Home() {
                 className="btn-check"
                 name="btnradio"
                 id="btnradio3"
-                for="btnradio3"
+                htmlFor="btnradio3"
                 autoComplete="off"
                 onClick={() => {
                   setCardData([])
